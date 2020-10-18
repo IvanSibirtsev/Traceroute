@@ -5,7 +5,8 @@ def create_args():
     parser = argparse.ArgumentParser(
         description='Python3.8 implementation of traceroute utility. ' +
                     'Read "README.md" for more information')
-    parser.add_argument('host', type=str,
+    parser.add_argument('-host', type=str,
+                        default='https://ru.wikipedia.org/wiki/Traceroute',
                         help='Destination to which utility traces route')
     parser.add_argument('-w', '--wait', type=int,
                         default=1, dest='wait', action='store',
