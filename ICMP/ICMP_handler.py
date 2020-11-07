@@ -1,4 +1,4 @@
-from output_code import OutputType
+from Utils.output_code import OutputType
 from ICMP.ICMP import ICMP
 import struct
 
@@ -22,7 +22,8 @@ class ICMPHandler:
         return self._delegator[self._type]()
 
     def _zero_type(self):
-        if self._pack_header[3] == ICMP.ID and self._pack_header[4] in self._sequence:
+        if (self._pack_header[3] == ICMP.ID
+                and self._pack_header[4] in self._sequence):
             self._output_code = OutputType.SUCCESS.value
 
     def _third_type(self):
