@@ -4,15 +4,3 @@
 * sudo python traceroute.py -host host
 * sudo python traceroute.py -host host -qn 1 -- меняет количество пакетов для запроса на 1
 * sudo python3 traceroute.py -host host -d -- debug-режим
-###TODO
-- [x] Поддержка IPv4
-- [x] Работа через ICMP + указание SEQ
-- [x] Вывод таблицы трассировки с временем ответа
-- [x] Посылать N запросов [по умолчанию N=3]
-- [x] Задание таймаута ожидания
-- [x] Задание максимального TTL
-- [x] падает при python3 traceroute.py -host 127.0.0.1
-- [x] Задание интервала времени между запросами
-- [x] Задание размера пакета [по умолчанию 40]
-- [x] debug-режим
-- [x] Задание payload пакета
