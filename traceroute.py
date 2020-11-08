@@ -4,7 +4,7 @@ from Utils.arguments import Arguments
 from console_output import ConsoleOutput
 from Utils.debugger import debugger
 from Utils.socket_wrapper import SocketWrapper
-from ICMP.ICMP import ICMP
+from ICMP.ICMP_packet import ICMP
 from packet_tracer import PacketTracer
 
 
@@ -38,13 +38,15 @@ class Traceroute:
         name = ''
         received_address = ''
         for i in range(self.args.query_number):
-            icmp = ICMP(self.sequence[i])
+            icmp = ICMP(self.sequence[i], self.args)
             self.socket.set_socket_options(self.ttl)
             packet = icmp.get_packet()
             packet_tracer = PacketTracer(self.socket, self.sequence,
-                                         self.output)
+                                         self.output, self.args.interval)
+
             name, received_address = packet_tracer.trace_packet(packet, name)
         return name, received_address
+
 
 def main():
     args = Arguments()

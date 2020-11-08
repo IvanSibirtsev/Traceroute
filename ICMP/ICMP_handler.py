@@ -1,6 +1,6 @@
-from Utils.output_code import OutputType
-from ICMP.ICMP import ICMP
 import struct
+from Utils.output_code import OutputType
+from ICMP.ICMP_packet import ICMP
 
 
 class ICMPHandler:
@@ -10,8 +10,9 @@ class ICMPHandler:
         self._sequence = sequence
         self._data = data
         self._output_code = None
-        self._delegator = {0: self._zero_type,
+        self._delegator = {0: self._echo_request,
                            3: self._third_type,
+                           8: self._echo_request,
                            11: self._eleven_type}
         self._handle()
 
@@ -21,7 +22,7 @@ class ICMPHandler:
     def _handle(self):
         return self._delegator[self._type]()
 
-    def _zero_type(self):
+    def _echo_request(self):
         if (self._pack_header[3] == ICMP.ID
                 and self._pack_header[4] in self._sequence):
             self._output_code = OutputType.SUCCESS.value

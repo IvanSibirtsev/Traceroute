@@ -1,13 +1,14 @@
 import socket as sock
 import struct
 import random
+import time
 from Utils.debugger import debugger
 
 
 class SocketWrapper:
     def __init__(self, args):
         self._host = ''
-        self._timeout = args.wait
+        self._timeout = args.timeout
         self._address = args.address
         self._port = random.choice(range(33434, 33535))
         self._socket = self.create_socket()
@@ -15,7 +16,7 @@ class SocketWrapper:
     @debugger
     def create_socket(self):
         socket = sock.socket(sock.AF_INET, sock.SOCK_RAW, sock.IPPROTO_ICMP)
-        socket.settimeout(self._timeout)
+
         socket.bind((self._host, self._port))
         return socket
 
@@ -25,7 +26,9 @@ class SocketWrapper:
 
     @debugger
     def get_data(self):
-        return self._socket.recvfrom(1024)
+        self._socket.settimeout(self._timeout)
+        data = self._socket.recvfrom(1024)
+        return data
 
     @debugger
     def close(self):

@@ -6,11 +6,12 @@ from Utils.debugger import debugger
 
 
 class PacketTracer:
-    def __init__(self, socket, sequence, output):
+    def __init__(self, socket, sequence, output, interval):
         self._socket = socket
         self._output = output
         self._sequence = sequence
         self._output_code = None
+        self._interval = interval
         self._start_time = time.perf_counter()
 
     @debugger
@@ -45,6 +46,7 @@ class PacketTracer:
             received_address = received_address[0]
             output_code = ICMPHandler(self._sequence, data).get_output_code()
         except s.timeout:
+            time.sleep(self._interval)
             received_address = None
             output_code = '*'
         return received_address, d_time, output_code

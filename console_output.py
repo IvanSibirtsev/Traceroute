@@ -1,5 +1,6 @@
 from Utils.debugger import debugger
 
+
 class ConsoleOutput:
     def __init__(self, args):
         self.args = args
