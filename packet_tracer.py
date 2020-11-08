@@ -14,7 +14,7 @@ class PacketTracer:
         self._interval = interval
         self._start_time = time.perf_counter()
 
-    # @debug_decorator
+    @debug_decorator
     def trace_packet(self, packet, name):
         self._socket.send_data(packet)
         self._output_code = OutputType.ERROR.value
@@ -37,7 +37,7 @@ class PacketTracer:
                 name = f'{received_host}({received_address})'
         return name, received_address
 
-    # @debug_decorator
+    @debug_decorator
     def _get_information_about_packet(self):
         d_time = 0
         try:

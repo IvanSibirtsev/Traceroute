@@ -67,8 +67,9 @@ class TestDebugger(unittest.TestCase):
         reformat_args = debugger.ReformatArguments(func_arg, returned_val)
         func_arg = reformat_args.get_reformat_function_arguments()
         returned_val = reformat_args.get_reformat_returned_value()
-        self.assertEqual(func_arg, ['test_classes.TestArgs object', 'binary data'])
-        self.assertEqual(returned_val, ['test_classes.TestArgs object', 'binary data'])
+        right = ['test_classes.TestArgs object', 'binary data']
+        self.assertEqual(func_arg, right)
+        self.assertEqual(returned_val, right)
 
     def test_void_functions(self):
         args = TestArgs()

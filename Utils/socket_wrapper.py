@@ -16,7 +16,8 @@ class SocketWrapper:
     @debug_decorator
     def create_socket(self):
         try:
-            socket = sock.socket(sock.AF_INET, sock.SOCK_RAW, sock.IPPROTO_ICMP)
+            socket = sock.socket(sock.AF_INET,
+                                 sock.SOCK_RAW, sock.IPPROTO_ICMP)
         except PermissionError:
             print('Use sudo.\n')
             sys.exit()
