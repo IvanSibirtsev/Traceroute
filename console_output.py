@@ -1,4 +1,4 @@
-from Utils.debugger import debugger
+from Utils.debugger import debug_decorator
 
 
 class ConsoleOutput:
@@ -11,24 +11,24 @@ class ConsoleOutput:
         self.output = [self.start]
         self.line = []
 
-    @debugger
+    @debug_decorator
     def add_ttl_number(self, ttl):
         string = str(ttl).rjust(len(str(self.args.hops)))
         self.add_line(string)
 
-    @debugger
+    @debug_decorator
     def add_line(self, line):
         self.line.append(line)
         if line[-1] == '\n':
             self._update()
 
-    @debugger
+    @debug_decorator
     def _update(self):
         string = ' '.join(self.line)
         self.output.append(string)
         print(string, end='')
         self.line = []
 
-    @debugger
+    @debug_decorator
     def print(self):
         print(self.end)

@@ -4,7 +4,7 @@ from Utils.arguments import Arguments
 TAB_1 = '\t'
 
 
-def debugger(original_function):
+def debug_decorator(original_function):
     def new_function(*args, **kwargs):
         if not Arguments().debug:
             return original_function(*args, **kwargs)
@@ -31,7 +31,7 @@ class ReformatArguments:
         self._reformat(self._function_args)
         self._function_args = self._reformat_args
         self._reformat_args = []
-        self._returned_value = self._make_returned()
+        self._make_returned()
 
     def get_reformat_function_arguments(self):
         return self._function_args
@@ -53,8 +53,11 @@ class ReformatArguments:
             self._reformat_args.append(arg)
 
     def _make_returned(self):
-        return self._reformat(self._returned_value) \
-            if self._returned_value else 'void function'
+        if self._returned_value:
+            self._reformat(self._returned_value)
+            self._returned_value = self._reformat_args
+        else:
+            self._returned_value = 'void function'
 
     @staticmethod
     def _reformat_objects(obj):

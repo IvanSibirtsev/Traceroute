@@ -2,7 +2,7 @@ from Utils.output_code import OutputType
 import time
 import socket as s
 from ICMP.ICMP_handler import ICMPHandler
-from Utils.debugger import debugger
+from Utils.debugger import debug_decorator
 
 
 class PacketTracer:
@@ -14,7 +14,7 @@ class PacketTracer:
         self._interval = interval
         self._start_time = time.perf_counter()
 
-    @debugger
+    # @debug_decorator
     def trace_packet(self, packet, name):
         self._socket.send_data(packet)
         self._output_code = OutputType.ERROR.value
@@ -37,7 +37,7 @@ class PacketTracer:
                 name = f'{received_host}({received_address})'
         return name, received_address
 
-    @debugger
+    # @debug_decorator
     def _get_information_about_packet(self):
         d_time = 0
         try:
@@ -51,13 +51,13 @@ class PacketTracer:
             output_code = '*'
         return received_address, d_time, output_code
 
-    @debugger
+    @debug_decorator
     def _time_add(self, d_time):
         if self._output_code.startswith('!'):
             self._output_code = f'{str(d_time)[:5]}ms {self._output_code}'
         if self._output_code == OutputType.SUCCESS.value:
             self._output_code = f'{str(d_time)[:5]}ms'
 
-    @debugger
+    @debug_decorator
     def _reformat_output_code(self):
         return self._output_code.ljust(8)

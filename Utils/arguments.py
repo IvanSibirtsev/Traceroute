@@ -1,11 +1,16 @@
 import argparse
 import socket
+import sys
 
 
 class Arguments:
     def __init__(self):
         self._console_args = create_args()
-        self.address = socket.gethostbyname(self._console_args.host)
+        try:
+            self.address = socket.gethostbyname(self._console_args.host)
+        except socket.gaierror:
+            print('Unknown destination address.')
+            sys.exit()
         self.host = self._console_args.host
         self.interval = self._console_args.interval
         self.query_number = self._console_args.query_number

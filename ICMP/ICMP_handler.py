@@ -36,7 +36,7 @@ class ICMPHandler:
         elif code in (9, 10, 13):
             self._output_code = OutputType.PROHIB.value
         else:
-            self._output_code = '!{code}'
+            self._output_code = f'!{code}'
 
     def _eleven_type(self):
         inner_header = self._unpack_packet_header(self._data[48:56])
