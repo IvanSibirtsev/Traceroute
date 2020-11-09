@@ -1,14 +1,13 @@
 import unittest
 import sys
 import io
+import os
 
-from test_classes import TestArgs, TestOutput, TestSocket
+from test_classes import TestArgs, TestCLI, TestSocket
 import ICMP.ICMP_packet as ICMPPacket
 import ICMP.payload as payload
-import Utils.arguments as arguments
 import Utils.debugger as debugger
-import Utils.output_code
-import console_output
+import cli
 import packet_tracer
 import traceroute
 
@@ -21,11 +20,12 @@ class TestPayload(unittest.TestCase):
 
     def test_from_file(self):
         message = '123456'
-        with open('test.txt', 'w') as file:
+        with open(test_file := 'test.txt', 'w') as file:
             file.write(message)
-        args = TestArgs(from_file='test.txt')
+        args = TestArgs(from_file=test_file)
         payload_test = payload.Payload(args).get_payload()
         self.assertEqual(len(message), len(payload_test))
+        os.remove(test_file)
 
 
 class TestICMPPacket(unittest.TestCase):
@@ -40,9 +40,8 @@ class TestPacketTracer(unittest.TestCase):
         args = TestArgs()
         ICMPPacket.ICMP.ID = 2454
         icmp_packet = ICMPPacket.ICMP(1, args).get_packet()
-
         socket = TestSocket(args)
-        console = TestOutput(args)
+        console = TestCLI(args)
         pack_tracer = packet_tracer.PacketTracer(socket, [1], console, 0.05)
         name, received_address = pack_tracer.trace_packet(icmp_packet, '')
         self.assertEqual(received_address, 'localhost')
@@ -52,7 +51,7 @@ class TestPacketTracer(unittest.TestCase):
         ICMPPacket.ICMP.ID = 0
         icmp_packet = ICMPPacket.ICMP(1, args).get_packet()
         socket = TestSocket(args, 'blocked')
-        console = TestOutput(args)
+        console = TestCLI(args)
         seq = [22, 23, 24]
         pack_tracer = packet_tracer.PacketTracer(socket, seq, console, 0.05)
         name, received_address = pack_tracer.trace_packet(icmp_packet, '')
@@ -90,26 +89,26 @@ class TestConsoleOutput(unittest.TestCase):
         old_stdout = sys.stdout
         sys.stdout = buffer = io.StringIO()
         args = TestArgs()
-        output = console_output.ConsoleOutput(args)
-        output.add_ttl_number(1)
-        output.add_line('line\n')
-        output.print()
+        cli_test = cli.CommandLineInterface(args)
+        cli_test.add_ttl_number(1)
+        cli_test.add_line('line\n')
+        cli_test.print()
         right = ' 1 line\nTracing complete!\n'
         sys.stdout = old_stdout
-        output = buffer.getvalue()
-        self.assertEqual(output, right)
+        cli_test = buffer.getvalue()
+        self.assertEqual(cli_test, right)
 
 
 class TestTraceroute(unittest.TestCase):
     def test_traceroute(self):
         args = TestArgs(adders='localhost')
         socket = TestSocket(args)
-        output = TestOutput(args)
+        cli_test = TestCLI(args)
         ICMPPacket.ICMP.ID = 2454
-        traceroute_test = traceroute.Traceroute(args, output, socket)
-        traceroute_test.traceroute()
+        traceroute_test = traceroute.Traceroute(args, cli_test, socket)
+        traceroute_test.start()
         right = [1, 'localhost (localhost)\n']
-        self.assertEqual(output.output, right)
+        self.assertEqual(cli_test.cli, right)
 
 
 if __name__ == '__main__':

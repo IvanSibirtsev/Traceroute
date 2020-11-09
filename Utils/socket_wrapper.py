@@ -9,7 +9,7 @@ class SocketWrapper:
     def __init__(self, args):
         self._host = ''
         self._timeout = args.timeout
-        self._address = args.address
+        self._address = args._address
         self._port = random.choice(range(33434, 33535))
         self._socket = self.create_socket()
 

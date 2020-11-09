@@ -46,17 +46,17 @@ class TestSocket:
         pass
 
 
-class TestOutput:
+class TestCLI:
     def __init__(self, args):
         self._args = args
-        self.output = []
+        self.cli = []
 
     def add_ttl_number(self, ttl):
-        self.output.append(ttl)
+        self.cli.append(ttl)
 
     def add_line(self, new_inf):
         if new_inf.find('ms') == -1:
-            self.output.append(new_inf)
+            self.cli.append(new_inf)
 
     def print(self):
-        self.output.append('end.')
+        self.cli.append('end.')

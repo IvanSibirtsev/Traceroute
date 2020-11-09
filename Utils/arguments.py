@@ -1,16 +1,13 @@
 import argparse
 import socket
 import sys
+import os
 
 
 class Arguments:
     def __init__(self):
         self._console_args = create_args()
-        try:
-            self.address = socket.gethostbyname(self._console_args.host)
-        except socket.gaierror:
-            print('Unknown destination address.')
-            sys.exit()
+        self.address = self._get_address()
         self.host = self._console_args.host
         self.interval = self._console_args.interval
         self.query_number = self._console_args.query_number
@@ -20,6 +17,26 @@ class Arguments:
         self.debug_wait = self._console_args.debug_wait
         self.payload_size = self._console_args.payload_size
         self.from_file = self._console_args.from_file
+        self._check_payload_length()
+        self._check_path()
+
+    def _get_address(self):
+        try:
+            return socket.gethostbyname(self._console_args.host)
+        except socket.gaierror:
+            print('Unknown destination address.')
+            sys.exit()
+
+    def _check_payload_length(self):
+        icmp_header_len = 8
+        if self.payload_size <= icmp_header_len:
+            print(f'Payload size must be > {icmp_header_len}.')
+            sys.exit()
+
+    def _check_path(self):
+        if self.from_file and not os.path.exists(self.from_file):
+            print(f'No such file {self.from_file}')
+            sys.exit()
 
 
 def create_args():

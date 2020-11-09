@@ -1,7 +1,7 @@
 from Utils.debugger import debug_decorator
 
 
-class ConsoleOutput:
+class CommandLineInterface:
     def __init__(self, args):
         self.args = args
         self.start = (f'Tracing route to {args.host} ({args.address}). ' +
