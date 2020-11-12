@@ -1,5 +1,3 @@
-import socket as s
-import sys
 from Utils.arguments import Arguments
 from cli import CommandLineInterface
 from Utils.debugger import debug_decorator
@@ -20,7 +18,8 @@ class Traceroute:
     @debug_decorator
     def start(self):
         received_address = ''
-        while self._ttl < self._args.hops and received_address != self._address:
+        while (self._ttl < self._args.hops and
+               received_address != self._address):
             self._cli.add_ttl_number(self._ttl)
             name, received_address = self._send_packets()
             self._sequence = self._make_sequence()

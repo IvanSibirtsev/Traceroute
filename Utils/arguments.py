@@ -65,7 +65,7 @@ def create_args():
     parser.add_argument('-dw', '--debug_wait', type=float,
                         default=0.1, dest='debug_wait', action='store',
                         help=helper['debug_wait'])
-    parser.add_argument('-i', '--interval', type=float, default=0.05,
+    parser.add_argument('-i', '--interval', type=float, default=0,
                         dest='interval', action='store',
                         help=helper['interval'])
     parser.add_argument('-qn', '--query_number', type=int,

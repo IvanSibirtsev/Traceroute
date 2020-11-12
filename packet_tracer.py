@@ -1,8 +1,8 @@
-from Utils.output_code import OutputType
 import time
 import socket as s
 from ICMP.ICMP_handler import ICMPHandler
 from Utils.debugger import debug_decorator
+from Utils.output_code import OutputType
 
 
 class PacketTracer:
@@ -46,7 +46,6 @@ class PacketTracer:
             received_address = received_address[0]
             output_code = ICMPHandler(self._sequence, data).get_output_code()
         except s.timeout:
-            time.sleep(self._interval)
             received_address = None
             output_code = '*'
         return received_address, d_time, output_code

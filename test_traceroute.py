@@ -2,11 +2,10 @@ import unittest
 import sys
 import io
 import os
-
 from test_classes import TestArgs, TestCLI, TestSocket
-import ICMP.ICMP_packet as ICMPPacket
-import ICMP.payload as payload
-import Utils.debugger as debugger
+from ICMP import ICMP_packet as ICMPPacket
+from ICMP import payload
+from Utils import debugger
 import cli
 import packet_tracer
 import traceroute
@@ -20,7 +19,8 @@ class TestPayload(unittest.TestCase):
 
     def test_from_file(self):
         message = '123456'
-        with open(test_file := 'test.txt', 'w') as file:
+        test_file = 'test_txt'
+        with open(test_file, 'w') as file:
             file.write(message)
         args = TestArgs(from_file=test_file)
         payload_test = payload.Payload(args).get_payload()

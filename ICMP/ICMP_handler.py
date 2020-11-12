@@ -9,7 +9,7 @@ class ICMPHandler:
         self._type = self._pack_header[0]
         self._sequence = sequence
         self._data = data
-        self._output_code = None
+        self._output_code = OutputType.ERROR.value
         self._delegator = {0: self._echo_request,
                            3: self._third_type,
                            8: self._echo_request,
